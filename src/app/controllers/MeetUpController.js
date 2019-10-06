@@ -5,9 +5,9 @@ import User from '../models/User';
 
 class MeetUpController {
   async index(req, res) {
-    const meetup = await Meetup.findAll({ where: { user_id: req.userId } });
+    const { date } = req.query;
 
-    return res.json(meetup);
+    return res.json(date);
   }
 
   async store(req, res) {
