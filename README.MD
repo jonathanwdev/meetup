@@ -1,4 +1,4 @@
-<h1>MeetUp</h1>
+<h1>MeetUp... (em desenvolvimento)</h1>
 <h3>API Rest MeetUp, desenvolvida com o framework não opinativo(ExpressJS)</h3>
 <h4>Aplicação utilizada para criar eventos organizados pelos próprios usuarios.</h2>
 
