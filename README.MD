@@ -1,14 +1,19 @@
-<h1>MeetUp... (em desenvolvimento)</h1>
-<h3>API Rest MeetUp, desenvolvida com o framework não opinativo(ExpressJS)</h3>
-<h4>Aplicação utilizada para criar eventos organizados pelos próprios usuarios.</h2>
+<h1>API REST (MEET UP)</h1>
+<h3>Uma api desenvolvida com o framework não opinativo(ExpressJS) com o objetivo de criar
+eventos organizados pelos próprios usuarios.</h3>
 
-Dependencias utilizadas :
-
+<h3>Dependencies :</h3>
 <ul>
 
   <li>
     <b>Docker</b><br>
     Utilizado para criar o container com a imagem do PostgreSQL
+    Utilizado para criar o container com a imagem do Redis
+  </li>
+
+  <li>
+    <b>BeeQueue</b><br>
+    Utilizado para monitorar de filas background jobs
   </li>
 
   <li>
@@ -17,8 +22,13 @@ Dependencias utilizadas :
   </li>
 
   <li>
+    <b>Nodemailer + Mailtrap </b><br>
+    Utilizado para simular o envio de e-mail no ambiente de desenvolvimento
+  </li>
+
+  <li>
     <b>Sequelize / Sequelize-cli</b> <br>
-    Utilizado fazer a abstração da base de dados
+    ORM utilizado fazer a abstração da base de dados
   </li>
 
   <li>
@@ -47,4 +57,31 @@ Dependencias utilizadas :
     utilizado para lidar com  multipart/form-data
   </li>
 
+</ul>
+<h3>Dev dependencies :</h3>
+<ul>
+  <li>
+    <b>eslint</b><br>
+  </li>
+   <li>
+    <b>eslint-config-airbnb-base</b><br>
+  </li>
+   <li>
+    <b>eslint-config-prettier</b><br>
+  </li>
+   <li>
+    <b>eslint-plugin-import</b><br>
+  </li>
+   <li>
+    <b>sequelize-cli</b><br>
+  </li>
+   <li>
+    <b>nodemon</b><br>
+  </li>
+   <li>
+    <b>prettier</b><br>
+  </li>
+   <li>
+    <b>sucrase</b><br>
+  </li>
 </ul>
