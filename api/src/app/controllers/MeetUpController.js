@@ -11,6 +11,7 @@ import {
 
 import { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
+import File from '../models/File';
 import User from '../models/User';
 
 class MeetUpController {
@@ -104,14 +105,37 @@ class MeetUpController {
         .status(401)
         .json({ error: 'You can only update your own meetups' });
     }
-    const { date } = req.body;
-    const hourStar = startOfHour(parseISO(date));
 
-    if (isAfter(hourStar, new Date())) {
-      const updatedMeetup = await meetup.update(req.body);
-      return res.json(updatedMeetup);
+    const hourStar = startOfHour(parseISO(req.body.date));
+
+    if (!isAfter(hourStar, new Date())) {
+      return res.status(401).json({ error: 'Invalid date' });
     }
-    return res.status(401).json({ error: 'Invalid date' });
+    await meetup.update(req.body);
+    const {
+      id,
+      title,
+      description,
+      location,
+      date,
+      banner,
+    } = await Meetup.findByPk(req.params.id, {
+      include: [
+        {
+          model: File,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+        },
+      ],
+    });
+
+    return res.json({
+      id,
+      title,
+      description,
+      location,
+      date,
+      banner,
+    });
   }
 
   async delete(req, res) {
