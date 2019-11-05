@@ -13,6 +13,6 @@ I'm working with react, and react-redux <br>
 Development...
 
 <p>
-  <img src="images/meet1.png" width="315" />
-  <img src="images/meet2.png" width="315" />
+  <img src="_images/meet1.png" width="315" />
+  <img src="_images/meet2.png" width="315" />
 </p>
