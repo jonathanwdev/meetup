@@ -1,6 +1,7 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { AiOutlineLoading } from 'react-icons/ai';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
@@ -14,9 +15,10 @@ const schema = Yup.object().shape({
     .required('O email é obrigatorio'),
   password: Yup.string().required('A senha é obrigatoria'),
 });
-
 export default function SignIn() {
   const dispatch = useDispatch();
+
+  const loading = useSelector(state => state.auth.loading);
 
   function handleSubmit({ email, password }) {
     dispatch(signInRequest(email, password));
@@ -34,7 +36,9 @@ export default function SignIn() {
           placeholder="Sua senha secreta"
         />
 
-        <button type="submit">Entrar</button>
+        <button type="submit">
+          {loading ? <AiOutlineLoading color="#fff" size={25} /> : 'Entrar'}
+        </button>
         <Link to="/register">Criar conta gratis</Link>
       </Form>
     </>

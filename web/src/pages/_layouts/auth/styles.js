@@ -1,5 +1,16 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { darken } from 'polished';
+
+/** BTN animation */
+const rotate = keyframes`
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+`;
+/** BTN animation */
 
 export const Wrapper = styled.div`
   height: 100%;
@@ -8,6 +19,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 export const Content = styled.div`
   width: 100%;
   max-width: 315px;
@@ -50,6 +62,10 @@ export const Content = styled.div`
       font-weight: bold;
       font-size: 16px;
       transition: background 0.2s;
+
+      svg {
+        animation: ${rotate} 2s linear infinite;
+      }
 
       &:hover {
         background: ${darken(0.03, '#f94d6a')};

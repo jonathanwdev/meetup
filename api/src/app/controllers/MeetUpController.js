@@ -138,7 +138,7 @@ class MeetUpController {
     });
   }
 
-  async delete(req, res) {
+  async destroy(req, res) {
     const meetup = await Meetup.findByPk(req.params.id);
     const user_id = req.userId;
     if (meetup.user_id !== user_id) {
