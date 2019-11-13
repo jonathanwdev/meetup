@@ -54,7 +54,7 @@ export const Meetup = styled.section`
     width: 100%;
 
     img {
-      height: 100%;
+      min-height: 100%;
       width: 100%;
       border-radius: 5px;
     }

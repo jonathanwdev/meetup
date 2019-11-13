@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { format, parseISO } from 'date-fns';
+import PropTypes from 'prop-types';
+import pt from 'date-fns/locale/pt';
 
 import api from '~/services/api';
 
@@ -9,7 +12,17 @@ export default function Details({ match }) {
   useEffect(() => {
     async function loadMeetups() {
       const response = await api.get(`list/${match.params.id}`);
-      setMeetups(response.data);
+      const data = {
+        ...response.data,
+        formatedDate: format(
+          parseISO(response.data.date),
+          `dd 'de' MMMM 'às' HH'h'`,
+          {
+            locale: pt,
+          }
+        ),
+      };
+      setMeetups(data);
     }
     loadMeetups();
   }, [match.params.id]);
@@ -17,37 +30,28 @@ export default function Details({ match }) {
   return (
     <Container>
       <Content>
-        {meetups.map(meetup => (
-          <>
-            <header>
-              <p>{meetup.title}</p>
-              <aside>
-                <button type="button">Editar</button>
-                <button type="button">Cancelar</button>
-              </aside>
-            </header>
-            <Meetup>
-              <div>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRCbLCtAN0pPHM3cEtNR0tEpFf6r6AIHOUMjOnAVl2srJO-5lQP"
-                  alt=""
-                />
-              </div>
-              <article>
-                O Meetup de React Native é um evento que reúne a comunidade de
-                desenvolvimento mobile utilizando React a fim de compartilhar
-                conhecimento. Todos são convidados. Caso queira participar como
-                palestrante do meetup envie um e-mail para
-                organizacao@meetuprn.com.br.
-              </article>
-              <footer>
-                <p>24 de julho as 18h</p>
-                <p>Estados Unidos da America</p>
-              </footer>
-            </Meetup>
-          </>
-        ))}
+        <header>
+          <p>{meetups.title}</p>
+          <aside>
+            <button type="button">Editar</button>
+            <button type="button">Cancelar</button>
+          </aside>
+        </header>
+        <Meetup>
+          <div>
+            <img src={meetups.url} alt="" />
+          </div>
+          <article>{meetups.description}</article>
+          <footer>
+            <p>{meetups.formatedDate}</p>
+            <p>{meetups.location}</p>
+          </footer>
+        </Meetup>
       </Content>
     </Container>
   );
 }
+
+Details.propTypes = {
+  match: PropTypes.objectOf().isRequired,
+};
