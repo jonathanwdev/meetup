@@ -3,9 +3,11 @@ import { lighten } from 'polished';
 
 export const Container = styled.div`
   width: 100%;
+  min-height: 100vh;
 `;
-export const Content = styled.div`
+export const Content = styled.section`
   max-width: 1100px;
+  height: 100%;
   margin: 0 auto;
 
   header {
@@ -31,14 +33,13 @@ export const Content = styled.div`
 
   ul {
     width: 100%;
-    height: 62px;
   }
 `;
 
 export const MeetList = styled.li`
   background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  height: 100%;
+  height: 62px;
 
   & + li {
     margin-top: 15px;

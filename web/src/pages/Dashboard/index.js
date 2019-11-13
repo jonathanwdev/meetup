@@ -34,7 +34,7 @@ export default function Dashboard() {
         <ul>
           {meetups.map(meetup => (
             <MeetList key={meetup.id}>
-              <Link to="/dashboard">
+              <Link to={`/details/${meetup.id}`}>
                 <strong>{meetup.title}</strong>
                 <p>{meetup.formatDate}</p>
               </Link>

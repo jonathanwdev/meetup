@@ -8,13 +8,15 @@ export default createGlobalStyle`
     padding:0;
     margin:0;
     outline:0;
+    font-family: Abel;
   }
   *:focus{
     outline:0;
   }
-  html, body, #root{
-    height:100%;
+  html,body,#app, #app>div{
+    height: 100%;
   }
+
   body{
     -webkit-font-smoothing: antialiased;
   }
