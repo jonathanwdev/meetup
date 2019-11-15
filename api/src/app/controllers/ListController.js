@@ -13,6 +13,7 @@ class ListController {
       include: [
         {
           model: File,
+          as: 'picture',
           attributes: ['id', 'path', 'url'],
         },
       ],
@@ -21,7 +22,6 @@ class ListController {
     if (!meetup) {
       return res.status(400).json({ error: ' Meetup does not exists' });
     }
-    const { title, description, location, date, banner } = meetup;
     return res.json(meetup);
   }
 }

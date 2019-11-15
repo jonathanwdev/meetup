@@ -23,6 +23,7 @@ export const Content = styled.section`
 
     aside {
       justify-content: flex-end;
+      display: flex;
 
       button {
         width: 100px;
@@ -31,13 +32,19 @@ export const Content = styled.section`
         border: 0;
         color: #fff;
         border-radius: 4px;
+        background: #d44059;
       }
-      button:nth-child(1) {
+      a {
+        display: block;
         background: #4dbaf9;
         margin-right: 15px;
-      }
-      button:nth-child(2) {
-        background: #d44059;
+        width: 100px;
+        height: 42px;
+        line-height: 42px;
+        text-align: center;
+        border: 0;
+        color: #fff;
+        border-radius: 4px;
       }
     }
   }
@@ -50,11 +57,11 @@ export const Meetup = styled.section`
   flex-direction: column;
 
   div {
-    height: 450px;
+    height: 500px;
     width: 100%;
 
     img {
-      min-height: 100%;
+      height: 100%;
       width: 100%;
       border-radius: 5px;
     }
@@ -76,11 +83,10 @@ export const Meetup = styled.section`
       color: rgba(255, 255, 255, 0.6);
     }
     p:nth-child(1) {
-      flex: 1;
       text-align: center;
     }
     p:nth-child(2) {
-      flex: 6;
+      flex: 1;
       text-align: left;
       padding-left: 25px;
     }

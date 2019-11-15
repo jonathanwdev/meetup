@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import PropTypes from 'prop-types';
 import pt from 'date-fns/locale/pt';
@@ -33,13 +34,16 @@ export default function Details({ match }) {
         <header>
           <p>{meetups.title}</p>
           <aside>
-            <button type="button">Editar</button>
+            <Link to={`/meetupdate/${meetups.id}`}>Editar</Link>
             <button type="button">Cancelar</button>
           </aside>
         </header>
         <Meetup>
           <div>
-            <img src={meetups.url} alt="" />
+            <img
+              src={meetups.picture && meetups.picture.url}
+              alt={meetups.title}
+            />
           </div>
           <article>{meetups.description}</article>
           <footer>
@@ -53,5 +57,9 @@ export default function Details({ match }) {
 }
 
 Details.propTypes = {
-  match: PropTypes.objectOf().isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }),
 };

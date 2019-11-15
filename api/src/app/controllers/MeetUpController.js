@@ -123,6 +123,7 @@ class MeetUpController {
       include: [
         {
           model: File,
+          as: 'picture',
           attributes: { exclude: ['createdAt', 'updatedAt'] },
         },
       ],
