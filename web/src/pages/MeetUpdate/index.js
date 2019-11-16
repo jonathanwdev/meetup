@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
+import DateTimePicker from 'react-datetime-picker';
 
 import { Form, Input, Textarea } from '@rocketseat/unform';
 import PropTypes from 'prop-types';
@@ -11,6 +12,7 @@ import { Container } from './styles';
 
 export default function MeetUpdate({ match }) {
   const [meetups, setMeetups] = useState([]);
+  const [date, setDate] = useState([]);
 
   useEffect(() => {
     async function loadMeetups() {
@@ -45,13 +47,8 @@ export default function MeetUpdate({ match }) {
           name="description"
           placeholder="Descrição completa"
         />
-        <input
-          type="datetime-local"
-          name="date"
-          value={meetups.formatedDate}
-          min="2019-01-01T00:00"
-        />
-
+        <input type="datetime-local" name="date" value="2019-01-01" />
+        <DateTimePicker onChange={() => this.onChange} />
         <Input type="text" name="location" placeholder="Localização" />
         <button type="submit">Salvar Meetup</button>
       </Form>
