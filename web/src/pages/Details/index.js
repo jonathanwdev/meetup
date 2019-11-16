@@ -1,41 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import PropTypes from 'prop-types';
 import pt from 'date-fns/locale/pt';
-
-import api from '~/services/api';
+import { deleteRequest } from '~/store/modules/meetup/actions';
 
 import { Container, Content, Meetup } from './styles';
 
 export default function Details({ match }) {
-  const [meetups, setMeetups] = useState([]);
-  useEffect(() => {
-    async function loadMeetups() {
-      const response = await api.get(`list/${match.params.id}`);
-      const data = {
-        ...response.data,
-        formatedDate: format(
-          parseISO(response.data.date),
-          `dd 'de' MMMM 'às' HH'h'`,
-          {
-            locale: pt,
-          }
-        ),
-      };
-      setMeetups(data);
-    }
-    loadMeetups();
-  }, [match.params.id]);
+  const dispatch = useDispatch();
+  const meetups = useSelector(state =>
+    state.meetup.meetups.find(m => m.id === Number(match.params.id))
+  );
 
+  function handleRemove() {
+    dispatch(deleteRequest(meetups.id));
+  }
   return (
     <Container>
       <Content>
         <header>
           <p>{meetups.title}</p>
           <aside>
-            <Link to={`/meetupdate/${meetups.id}`}>Editar</Link>
-            <button type="button">Cancelar</button>
+            <Link to={`/update-meetup/${meetups.id}`}>Editar</Link>
+            <button type="button" onClick={handleRemove}>
+              Cancelar
+            </button>
           </aside>
         </header>
         <Meetup>
@@ -47,7 +38,11 @@ export default function Details({ match }) {
           </div>
           <article>{meetups.description}</article>
           <footer>
-            <p>{meetups.formatedDate}</p>
+            <p>
+              {format(parseISO(meetups.date), `dd 'de' MMMM 'às' HH'h'`, {
+                locale: pt,
+              })}
+            </p>
             <p>{meetups.location}</p>
           </footer>
         </Meetup>

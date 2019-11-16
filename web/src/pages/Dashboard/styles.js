@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { lighten } from 'polished';
+import { lighten, darken } from 'polished';
 
 /** Loading animation */
 const rotate = keyframes`
@@ -32,13 +32,22 @@ export const Content = styled.section`
       color: #fff;
     }
 
-    button {
+    a {
       width: 172px;
       height: 42px;
       color: #fff;
       background: #f94d6a;
       border-radius: 4px;
+      font-size: 16px;
       border: 0;
+      display: block;
+      text-align: center;
+      line-height: 42px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: ${darken(0.05, '#f94d6a')};
+      }
     }
   }
 
@@ -46,6 +55,7 @@ export const Content = styled.section`
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 
     svg {
       animation: ${rotate} 2s linear infinite;

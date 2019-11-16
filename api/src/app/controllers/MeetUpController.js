@@ -119,6 +119,9 @@ class MeetUpController {
       location,
       date,
       banner,
+      picture,
+      path,
+      url,
     } = await Meetup.findByPk(req.params.id, {
       include: [
         {
@@ -128,7 +131,6 @@ class MeetUpController {
         },
       ],
     });
-
     return res.json({
       id,
       title,
@@ -136,6 +138,9 @@ class MeetUpController {
       location,
       date,
       banner,
+      picture,
+      path,
+      url,
     });
   }
 

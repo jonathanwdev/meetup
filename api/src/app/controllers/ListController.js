@@ -3,13 +3,8 @@ import File from '../models/File';
 
 class ListController {
   async index(req, res) {
-    const meetup = await Meetup.findAll({ where: { user_id: req.userId } });
-
-    return res.json(meetup);
-  }
-
-  async show(req, res) {
-    const meetup = await Meetup.findByPk(req.params.id, {
+    const meetups = await Meetup.findAll({
+      where: { user_id: req.userId },
       include: [
         {
           model: File,
@@ -19,10 +14,7 @@ class ListController {
       ],
     });
 
-    if (!meetup) {
-      return res.status(400).json({ error: ' Meetup does not exists' });
-    }
-    return res.json(meetup);
+    return res.json(meetups);
   }
 }
 

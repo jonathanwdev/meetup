@@ -9,7 +9,7 @@ export default function meetup(state = INITIAL_STATE, action) {
   return produce(state, draft => {
     switch (action.type) {
       case '@meetup/LIST_REQUEST': {
-        draft.loading = false;
+        draft.loading = true;
         break;
       }
       case '@meetup/LIST_SUCCESS': {
@@ -17,6 +17,15 @@ export default function meetup(state = INITIAL_STATE, action) {
         draft.loading = false;
         break;
       }
+      case '@meetup/UPDATE_REQUEST': {
+        draft.meetups = action.payload.meetups;
+        break;
+      }
+      case '@meetup/UPDATE_SUCCESS': {
+        draft.meetups = action.payload.meetups;
+        break;
+      }
+
       case '@meetup/MEET_FAILURE': {
         draft.loading = false;
         break;

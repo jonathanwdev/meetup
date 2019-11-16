@@ -12,19 +12,20 @@ import { Container, Content, MeetList } from './styles';
 export default function Dashboard() {
   const dispatch = useDispatch();
   const meetups = useSelector(state => state.meetup.meetups);
-  const loading = useSelector(state => state.meetup.meetups);
+  const loading = useSelector(state => state.meetup.loading);
 
   useEffect(() => {
     dispatch(listRequest());
   }, [dispatch]);
+
   return (
     <Container>
-      <Content>
+      <Content loading={loading ? 1 : 0}>
         <header>
           <p>Meus Meetups</p>
-          <button type="button">Novo Meetup</button>
+          <Link to="/new">Novo Meetup</Link>
         </header>
-        <ul loading={loading ? 1 : 0}>
+        <ul>
           {loading ? (
             <AiOutlineLoading color="#eb3443" size={40} />
           ) : (
