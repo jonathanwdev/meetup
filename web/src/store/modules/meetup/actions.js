@@ -29,11 +29,14 @@ export function updateMeetupRequest(id, data) {
     payload: { id, data },
   };
 }
-export function updateMeetupSuccess() {
+
+export function updateMeetupSuccess(meetup) {
   return {
     type: '@meetup/UPDATE_SUCCESS',
+    payload: { meetup },
   };
 }
+
 export function deleteMeetupRequest(id) {
   return {
     type: '@meetup/DELETE_REQUEST',

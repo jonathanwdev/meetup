@@ -18,6 +18,17 @@ export default function meetup(state = INITIAL_STATE, action) {
         break;
       }
 
+      case '@meetup/UPDATE_SUCCESS': {
+        const meetupAtualizado = action.payload.meetup;
+        const newlist = draft.meetups.filter(
+          item => item.id !== meetupAtualizado.id
+        );
+        newlist.push(meetupAtualizado);
+        draft.meetups = newlist;
+
+        break;
+      }
+
       case '@meetup/MEET_FAILURE': {
         draft.loading = false;
         break;
