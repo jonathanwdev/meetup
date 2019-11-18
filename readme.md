@@ -19,6 +19,10 @@ Finished!
 I worked with react, redux and redux-saga<br>
 Finished !!
 <a href="web">Web App</a> <br>
+<p>
+  <img src="_images/meet1.png" width="315" />
+  <img src="_images/meet2.png" width="315" />
+</p>
 
 
 <hr>
@@ -28,7 +32,3 @@ I'm gonna work with react native<br>
 Development....
 
 
-<p>
-  <img src="_images/meet1.png" width="315" />
-  <img src="_images/meet2.png" width="315" />
-</p>

@@ -4,6 +4,7 @@
 <h4>Main Dependencies</h4>
 
 <p>In this application, the users can create meetups per region and date, they also can update e delete his own meetups, in the mobile version i'll make possible the meetup's subscriptions.</p><br>
+
 <ul>
   <li>Styled-components</li>
   <li>React toastify</li>
@@ -13,7 +14,7 @@
   <li>Rocketseat unform</li>
   <li>yup</li>
   <li>date fns</li>
-<ul>
+<ul><br><br>
 
 <p>
   <img src="src/assets/readme1.png" width="315">
