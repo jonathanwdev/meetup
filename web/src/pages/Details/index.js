@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import PropTypes from 'prop-types';
 import pt from 'date-fns/locale/pt';
-import { deleteRequest } from '~/store/modules/meetup/actions';
+import { deleteMeetupRequest } from '~/store/modules/meetup/actions';
 
 import { Container, Content, Meetup } from './styles';
 
@@ -15,7 +15,7 @@ export default function Details({ match }) {
   );
 
   function handleRemove() {
-    dispatch(deleteRequest(meetups.id));
+    dispatch(deleteMeetupRequest(meetups.id));
   }
   return (
     <Container>

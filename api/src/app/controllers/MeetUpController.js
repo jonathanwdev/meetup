@@ -90,7 +90,7 @@ class MeetUpController {
       description: Yup.string().required(),
       location: Yup.string().required(),
       date: Yup.date().required(),
-      banner: Yup.number().required(),
+      banner: Yup.string().required(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -137,10 +137,7 @@ class MeetUpController {
       description,
       location,
       date,
-      banner,
       picture,
-      path,
-      url,
     });
   }
 

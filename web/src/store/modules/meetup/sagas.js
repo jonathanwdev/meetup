@@ -1,28 +1,58 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { listSuccess, meetFailure, deleteSuccess } from './actions';
+import { toast } from 'react-toastify';
+import {
+  listMeetupSuccess,
+  meetFailure,
+  deleteMeetupSuccess,
+  updateMeetupSuccess,
+  createMeetupSuccess,
+} from './actions';
 import history from '~/services/history';
 import api from '~/services/api';
 
 export function* listMeetup() {
   try {
     const response = yield call(api.get, 'list');
-    yield put(listSuccess(response.data));
+    yield put(listMeetupSuccess(response.data));
   } catch (err) {
     yield put(meetFailure());
   }
 }
+
+export function* createMeetup({ payload }) {
+  try {
+  } catch (err) {}
+}
+
+export function* updateMeetup({ payload }) {
+  try {
+    const { id, data } = payload;
+    const response = yield call(api.put, `meetups/${id}`, data);
+    yield put(updateMeetupSuccess(response.data));
+    toast.success('Meetup atualizado com sucesso!');
+  } catch (err) {
+    toast.error('Erro ao atualizar meetup, verifique todos os campos!');
+    yield put(meetFailure());
+  }
+}
+
 export function* deleteMeetup({ payload }) {
   try {
     const { id } = payload;
     const response = yield call(api.delete, `/meetups/${id}`);
+    yield put(deleteMeetupSuccess(response.data));
+    toast.success('Meetup excluido com sucesso!');
     history.push('/dashboard');
-    yield put(deleteSuccess(response.data));
   } catch (err) {
+    toast.error('Ocorreu um erro inesperado, tente novamente.');
+
     yield put(meetFailure());
   }
 }
 
 export default all([
   takeLatest('@meetup/LIST_REQUEST', listMeetup),
+  takeLatest('@meetup/CREATE_REQUEST', createMeetup),
+  takeLatest('@meetup/UPDATE_REQUEST', updateMeetup),
   takeLatest('@meetup/DELETE_REQUEST', deleteMeetup),
 ]);

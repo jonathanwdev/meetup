@@ -5,7 +5,7 @@ import { AiOutlineLoading } from 'react-icons/ai';
 
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import { listRequest } from '~/store/modules/meetup/actions';
+import { listMeetupRequest } from '~/store/modules/meetup/actions';
 
 import { Container, Content, MeetList } from './styles';
 
@@ -15,7 +15,7 @@ export default function Dashboard() {
   const loading = useSelector(state => state.meetup.loading);
 
   useEffect(() => {
-    dispatch(listRequest());
+    dispatch(listMeetupRequest());
   }, [dispatch]);
 
   return (
@@ -23,7 +23,7 @@ export default function Dashboard() {
       <Content loading={loading ? 1 : 0}>
         <header>
           <p>Meus Meetups</p>
-          <Link to="/new">Novo Meetup</Link>
+          <Link to="/create">Novo Meetup</Link>
         </header>
         <ul>
           {loading ? (

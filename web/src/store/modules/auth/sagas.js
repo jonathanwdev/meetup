@@ -16,7 +16,7 @@ export function* signIn({ payload }) {
     const { token, user } = response.data;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
-
+    toast.success('Seja bem vindo !!');
     yield put(signInSuccess(token, user));
 
     history.push('/dashboard');
@@ -34,6 +34,7 @@ export function* signUp({ payload }) {
       email,
       password,
     });
+    toast.success('Cadastro realizado com sucesso!');
     history.push('/');
   } catch (err) {
     toast.error('Falha no cadastro, verifique seus dados');
@@ -51,6 +52,8 @@ export function setToken({ payload }) {
 }
 
 export function signOut() {
+  toast.error('Adeus :(');
+
   history.push('/');
 }
 

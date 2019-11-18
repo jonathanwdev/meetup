@@ -17,12 +17,16 @@ export default function meetup(state = INITIAL_STATE, action) {
         draft.loading = false;
         break;
       }
+      case '@meetup/CREATE_REQUEST': {
+        break;
+      }
+      case '@meetup/CREATE_SUCCESS': {
+        break;
+      }
       case '@meetup/UPDATE_REQUEST': {
-        draft.meetups = action.payload.meetups;
         break;
       }
       case '@meetup/UPDATE_SUCCESS': {
-        draft.meetups = action.payload.meetups;
         break;
       }
 

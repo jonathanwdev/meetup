@@ -46,7 +46,7 @@ export const Container = styled.div`
       color: #fff;
       font-size: 16px;
     }
-    input:nth-child(5) {
+    input[name='location'] {
       width: 100%;
       height: 50px;
       background: rgba(0, 0, 0, 0.2);
@@ -57,7 +57,7 @@ export const Container = styled.div`
       font-size: 16px;
     }
 
-    button {
+    button[type='submit'] {
       width: 180px;
       height: 42px;
       color: #fff;
@@ -66,6 +66,13 @@ export const Container = styled.div`
       border-radius: 4px;
       margin-bottom: 20px;
       align-self: flex-end;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        margin-right: 5px;
+      }
 
       &:hover {
         background: ${darken(0.03, '#f94d6a')};
