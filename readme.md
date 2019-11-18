@@ -16,9 +16,17 @@ Finished!
 <hr>
 
 <h2>Front-end</h2>
-I'm working with react, and react-redux <br>
+I worked with react, redux and redux-saga<br>
+Finished !!
+<a href="web">Web App</a> <br>
 
-Development...
+
+<hr>
+
+<h2>Mobile</h2>
+I'm gonna work with react native<br>
+Development....
+
 
 <p>
   <img src="_images/meet1.png" width="315" />
