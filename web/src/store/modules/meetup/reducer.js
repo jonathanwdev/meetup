@@ -27,6 +27,7 @@ export default function meetup(state = INITIAL_STATE, action) {
         break;
       }
       case '@meetup/UPDATE_SUCCESS': {
+        draft.meetups = action.payload;
         break;
       }
 
