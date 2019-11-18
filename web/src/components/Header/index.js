@@ -24,7 +24,7 @@ export default function Header() {
         <aside>
           <div>
             <strong>{profile.name}</strong>
-            <Link to="profile">Meu perfil</Link>
+            <Link to="/profile">Meu perfil</Link>
           </div>
           <button type="button" onClick={handleSignOut}>
             Sair

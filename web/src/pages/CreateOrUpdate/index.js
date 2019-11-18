@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MdAddCircleOutline } from 'react-icons/md';
 import { useLocation } from 'react-router-dom';
-
+import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
 import PropTypes from 'prop-types';
 import {
@@ -23,7 +23,7 @@ export default function CreateOrUpdate({ match }) {
 
   function handleSubmit(data) {
     if (option === 'create') {
-      dispatch(createMeetupRequest());
+      dispatch(createMeetupRequest(data));
     } else {
       dispatch(updateMeetupRequest(match.params.id, data));
     }

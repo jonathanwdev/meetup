@@ -21,7 +21,16 @@ export function* listMeetup() {
 
 export function* createMeetup({ payload }) {
   try {
-  } catch (err) {}
+    const meetup = payload.data;
+    const response = yield call(api.post, 'meetups', meetup);
+
+    yield put(createMeetupSuccess(response.data));
+    toast.success('Meetup atualizado com sucesso!');
+    history.push('/dashboard');
+  } catch (err) {
+    toast.error('Erro ao criar meetup, verifique todos os campos!');
+    yield put(meetFailure());
+  }
 }
 
 export function* updateMeetup({ payload }) {
@@ -30,6 +39,7 @@ export function* updateMeetup({ payload }) {
     const response = yield call(api.put, `meetups/${id}`, data);
     yield put(updateMeetupSuccess(response.data));
     toast.success('Meetup atualizado com sucesso!');
+    history.push('/dashboard');
   } catch (err) {
     toast.error('Erro ao atualizar meetup, verifique todos os campos!');
     yield put(meetFailure());
@@ -39,7 +49,7 @@ export function* updateMeetup({ payload }) {
 export function* deleteMeetup({ payload }) {
   try {
     const { id } = payload;
-    const response = yield call(api.delete, `/meetups/${id}`);
+    const response = yield call(api.delete, `meetups/${id}`);
     yield put(deleteMeetupSuccess(response.data));
     toast.success('Meetup excluido com sucesso!');
     history.push('/dashboard');

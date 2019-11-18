@@ -16,9 +16,10 @@ export function createMeetupRequest(data) {
     payload: { data },
   };
 }
-export function createMeetupSuccess() {
+export function createMeetupSuccess(meetups) {
   return {
     type: '@meetup/CREATE_SUCCESS',
+    payload: { meetups },
   };
 }
 
