@@ -10,11 +10,20 @@ import { Container } from './styles';
 const schema = Yup.object().shape({
   name: Yup.string().required('O nome é obrigatorio'),
   email: Yup.string()
-    .email('Insira um email valido')
+    .email()
     .required('O email é obrigatorio'),
-  oldPassword: Yup.string().min(6, 'No minimo 6 caracteres'),
-  password: Yup.string().min(6, 'No minimo 6 caracteres'),
-  confirmPassword: Yup.string().min(6, 'No minimo 6 caracteres'),
+  oldPassword: Yup.string().required('A senha é obrigatoria'),
+
+  password: Yup.string()
+    .min(6)
+    .when('oldPassword', (oldPassword, field) =>
+      oldPassword ? field.required().min(6) : field
+    ),
+  confirmPassword: Yup.string().when('password', (password, field) =>
+    password
+      ? field.required('Confirme sua senha').oneOf([Yup.ref('password')])
+      : field
+  ),
 });
 
 export default function Profile() {
@@ -28,7 +37,7 @@ export default function Profile() {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit} initialData={profile}>
+      <Form schema={schema} onSubmit={handleSubmit} initialData={profile}>
         <Input type="text" name="name" placeholder="Nome Completo" />
         <Input type="email" name="email" placeholder="Email" />
         <hr />

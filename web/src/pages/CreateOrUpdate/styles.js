@@ -60,6 +60,7 @@ export const Container = styled.div`
       color: #fb6f91;
       align-self: flex-start;
       margin: 0 0 10px;
+      font-size: 14px;
       font-weight: bold;
     }
 

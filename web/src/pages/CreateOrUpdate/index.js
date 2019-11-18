@@ -14,6 +14,13 @@ import Banner from './Banner';
 
 import { Container } from './styles';
 
+const schema = Yup.object().shape({
+  banner: Yup.number().required('O banner é obrigatorio'),
+  title: Yup.string().required('O titulo é obrigatorio'),
+  location: Yup.string().required('O campo local é obrigatorio'),
+  description: Yup.string().required('Favor, inserir uma descrição'),
+  date: Yup.date().required('A data é obrigatoria'),
+});
 export default function CreateOrUpdate({ match }) {
   const dispatch = useDispatch();
   const [, option] = useLocation().pathname.split('/');
@@ -31,7 +38,7 @@ export default function CreateOrUpdate({ match }) {
 
   return (
     <Container>
-      <Form initialData={meetups} onSubmit={handleSubmit}>
+      <Form schema={schema} initialData={meetups} onSubmit={handleSubmit}>
         <Banner name="banner" />
         <Input type="text" name="title" placeholder="Titulo do Meetup" />
         <Input
