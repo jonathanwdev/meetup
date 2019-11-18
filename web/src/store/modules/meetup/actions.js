@@ -29,10 +29,9 @@ export function updateMeetupRequest(id, data) {
     payload: { id, data },
   };
 }
-export function updateMeetupSuccess(meetups) {
+export function updateMeetupSuccess() {
   return {
     type: '@meetup/UPDATE_SUCCESS',
-    payload: { meetups },
   };
 }
 export function deleteMeetupRequest(id) {

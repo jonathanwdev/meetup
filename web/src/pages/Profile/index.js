@@ -19,6 +19,7 @@ const schema = Yup.object().shape({
 
 export default function Profile() {
   const dispatch = useDispatch();
+  const loading = useSelector(state => state.user.loading);
   const profile = useSelector(state => state.user.profile);
 
   function handleSubmit(data) {
@@ -38,7 +39,9 @@ export default function Profile() {
           name="confirmPassword"
           placeholder="Confirme a nova senha"
         />
-        <button type="submit">Salvar perfil</button>
+        <button type="submit">
+          {loading ? 'Atualizando...' : 'Salvar perfil'}
+        </button>
       </Form>
     </Container>
   );
