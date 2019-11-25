@@ -1,7 +1,6 @@
 import React from 'react';
-import { ActivityIndicator , View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
-
 
 import { Container, Text } from './styles';
 

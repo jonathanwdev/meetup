@@ -7,6 +7,7 @@ export const Container = styled(RectButton)`
   border-radius: 4px;
   align-items: center;
   justify-content: center;
+  display: ${props => (props.invisible ? 'none' : 'flex')};
 `;
 export const Text = styled.Text`
   color: rgba(255, 255, 255, 0.8);

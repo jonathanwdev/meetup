@@ -13,7 +13,7 @@ export const Meetup = styled.View`
   justify-content: space-between;
   overflow: hidden;
   margin-bottom: 15px;
-  opacity: ${props => (props.past ? 0.4 : 1)};
+  opacity: ${props => (props.past ? 0.6 : 1)};
 `;
 export const Banner = styled.Image`
   width: 335px;

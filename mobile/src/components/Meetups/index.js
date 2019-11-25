@@ -27,7 +27,10 @@ export default function Meetups({ data, onSubscription }) {
           <About>{`Organizador: ${data.User.name}`}</About>
         </Description>
 
-        <SubscriptionButton onPress={onSubscription}>
+        <SubscriptionButton
+          onPress={onSubscription}
+          invisible={new Date(data.date) < new Date()}
+        >
           Realizar inscrição
         </SubscriptionButton>
       </Meetup>
