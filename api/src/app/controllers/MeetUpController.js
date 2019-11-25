@@ -36,6 +36,11 @@ class MeetUpController {
           model: User,
           attributes: ['id', 'name', 'email'],
         },
+        {
+          model: File,
+          as: 'picture',
+          attributes: ['id', 'path', 'url'],
+        },
       ],
     });
     return res.json(meetup);
