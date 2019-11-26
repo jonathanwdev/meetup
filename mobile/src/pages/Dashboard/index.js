@@ -1,18 +1,15 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { format, subDays, addDays, parseISO } from 'date-fns';
+import { format, subDays, addDays } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import api from '~/services/api';
 
 import Header from '~/components/Header';
 import Meetups from '~/components/Meetups';
 import Background from '~/components/Background';
-
-import { listMeetupRequest } from '~/store/modules/meetup/actions';
 
 import {
   Container,
@@ -28,21 +25,45 @@ export default function Dashboard() {
   const [date, setDate] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(1);
-
-  const dispatch = useDispatch();
-  const meetups = useSelector(state => state.meetup.meetups);
-  const loading = useSelector(state => state.meetup.loading);
+  const [loading, setLoading] = useState(false);
+  const [meetups, setMeetups] = useState([]);
 
   const dateFormatted = useMemo(
     () => format(date, "dd 'de' MMMM", { locale: pt }),
     [date]
   );
+  /** Loading meetups */
+
+  useEffect(() => {
+    setLoading(true);
+    async function loadMeetups() {
+      const response = await api.get('meetups', {
+        params: {
+          date,
+          page: 1,
+        },
+      });
+      setMeetups(response.data);
+      setLoading(false);
+    }
+    loadMeetups();
+  }, [date, page]);
+
+  /** Loading meetups */
 
   /** Inifnity scroll  */
 
   async function handleLoadMore() {
-    if (meetups.lenght < 10) return;
-    setPage(page + 1);
+    const response = await api.get('meetups', {
+      params: {
+        date,
+        page: page + 1,
+      },
+    });
+    if (response.data.lenght > 0) {
+      setPage(page + 1);
+      setMeetups([...meetups, ...response.data]);
+    }
   }
 
   /** Inifnity scroll  */
@@ -65,20 +86,17 @@ export default function Dashboard() {
   /** Refreshing page  */
   async function handleRefresh() {
     setRefreshing(true);
-    setPage(1);
-    dispatch(listMeetupRequest(date, page));
+    const response = await api.get('meetups', {
+      params: {
+        date,
+        page,
+      },
+    });
+    setMeetups(response.data);
     setPage(1);
     setRefreshing(false);
   }
   /** Refreshing page  */
-
-  /** Getting meetups from redux */
-
-  useEffect(() => {
-    dispatch(listMeetupRequest(date, page));
-  }, [date, dispatch, page]);
-
-  /** Getting meetups from redux */
 
   /** Changind date  */
   function handlePrevDay() {
@@ -123,8 +141,8 @@ export default function Dashboard() {
           <List
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            // onEndReached={handleLoadMore}
-            // onEndReachedThreshold={0.1}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.3}
             data={meetups}
             keyExtractor={item => String(item.id)}
             renderItem={({ item }) => (
