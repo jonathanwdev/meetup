@@ -31,6 +31,12 @@ export const DateButton = styled(RectButton)`
 export const Text = styled.Text`
   color: #fff;
 `;
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: '#fff',
+})`
+  margin: 30px 0;
+`;
 
 export const List = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,

@@ -18,11 +18,13 @@ import {
   DateButton,
   Text,
   List,
+  Loading,
 } from './styles';
 
 export default function Dashboard() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [date, setDate] = useState(new Date());
+  const [total, setTotal] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -32,11 +34,13 @@ export default function Dashboard() {
     () => format(date, "dd 'de' MMMM", { locale: pt }),
     [date]
   );
+
   /** Loading meetups */
 
   useEffect(() => {
-    setLoading(true);
     async function loadMeetups() {
+      setLoading(true);
+
       const response = await api.get('meetups', {
         params: {
           date,
@@ -51,20 +55,23 @@ export default function Dashboard() {
 
   /** Loading meetups */
 
-  /** Inifnity scroll  */
-
   async function handleLoadMore() {
+    setLoading(true);
     const response = await api.get('meetups', {
       params: {
         date,
         page: page + 1,
       },
     });
-    if (response.data.lenght > 0) {
-      setPage(page + 1);
-      setMeetups([...meetups, ...response.data]);
-    }
+    const totalItems = meetups.length;
+
+    setTotal(Math.floor(totalItems / 10));
+    setPage(page + 1);
+    setMeetups([...meetups, ...response.data]);
+    setLoading(false);
   }
+
+  /** Inifnity scroll  */
 
   /** Inifnity scroll  */
 
@@ -83,17 +90,17 @@ export default function Dashboard() {
 
   /** Load Subscriptions */
 
-  /** Refreshing page  */
   async function handleRefresh() {
+    /** Refreshing page  */
     setRefreshing(true);
     const response = await api.get('meetups', {
       params: {
         date,
-        page,
+        page: 1,
       },
     });
     setMeetups(response.data);
-    setPage(1);
+
     setRefreshing(false);
   }
   /** Refreshing page  */
@@ -141,8 +148,9 @@ export default function Dashboard() {
           <List
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            onEndReached={handleLoadMore}
+            onEndReached={() => handleLoadMore()}
             onEndReachedThreshold={0.1}
+            ListFooterComponent={loading && <Loading />}
             data={meetups}
             keyExtractor={item => String(item.id)}
             renderItem={({ item }) => (
