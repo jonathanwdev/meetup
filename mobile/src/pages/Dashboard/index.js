@@ -22,9 +22,7 @@ import {
 } from './styles';
 
 export default function Dashboard() {
-  const [subscriptions, setSubscriptions] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [total, setTotal] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -44,10 +42,11 @@ export default function Dashboard() {
       const response = await api.get('meetups', {
         params: {
           date,
-          page: 1,
+          page,
         },
       });
       setMeetups(response.data);
+      setPage(1);
       setLoading(false);
     }
     loadMeetups();
@@ -55,43 +54,8 @@ export default function Dashboard() {
 
   /** Loading meetups */
 
-  async function handleLoadMore() {
-    setLoading(true);
-    const response = await api.get('meetups', {
-      params: {
-        date,
-        page: page + 1,
-      },
-    });
-    const totalItems = meetups.length;
-
-    setTotal(Math.floor(totalItems / 10));
-    setPage(page + 1);
-    setMeetups([...meetups, ...response.data]);
-    setLoading(false);
-  }
-
-  /** Inifnity scroll  */
-
-  /** Inifnity scroll  */
-
-  /** Load Subscriptions */
-  useEffect(() => {
-    async function loadSubscriptions() {
-      try {
-        const response = await api.get('subscriptions');
-        setSubscriptions(response.data);
-      } catch (err) {
-        Alert.alert('Erro', 'Parece que algo deu errado.');
-      }
-    }
-    loadSubscriptions();
-  }, []);
-
-  /** Load Subscriptions */
-
+  /** Refreshing page  */
   async function handleRefresh() {
-    /** Refreshing page  */
     setRefreshing(true);
     const response = await api.get('meetups', {
       params: {
@@ -125,6 +89,20 @@ export default function Dashboard() {
     }
   }
 
+  async function handleLoadMore() {
+    setLoading(true);
+    const newPage = page + 1;
+    const response = await api.get('meetups', {
+      params: {
+        date,
+        page: newPage,
+      },
+    });
+    setMeetups([...meetups, ...response.data]);
+    setPage(newPage);
+    setLoading(false);
+  }
+
   return (
     <Background>
       <Header />
@@ -148,8 +126,8 @@ export default function Dashboard() {
           <List
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            onEndReached={() => handleLoadMore()}
             onEndReachedThreshold={0.1}
+            onEndReached={handleLoadMore}
             ListFooterComponent={loading && <Loading />}
             data={meetups}
             keyExtractor={item => String(item.id)}
