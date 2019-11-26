@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { format, subDays, addDays, parseISO } from 'date-fns';
@@ -23,18 +24,30 @@ import {
 } from './styles';
 
 export default function Dashboard() {
+  const [subscriptions, setSubscriptions] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [refreshing, setRefreshing] = useState(false);
+  const [page, setPage] = useState(1);
+
   const dispatch = useDispatch();
   const meetups = useSelector(state => state.meetup.meetups);
   const loading = useSelector(state => state.meetup.loading);
 
-  const [date, setDate] = useState(new Date());
   const dateFormatted = useMemo(
     () => format(date, "dd 'de' MMMM", { locale: pt }),
     [date]
   );
 
+  /** Inifnity scroll  */
+
+  async function handleLoadMore() {
+    if (meetups.lenght < 10) return;
+    setPage(page + 1);
+  }
+
+  /** Inifnity scroll  */
+
   /** Load Subscriptions */
-  const [subscriptions, setSubscriptions] = useState([]);
   useEffect(() => {
     async function loadSubscriptions() {
       try {
@@ -49,18 +62,7 @@ export default function Dashboard() {
 
   /** Load Subscriptions */
 
-  /** Inifnity scroll  */
-
-  const [page, setPage] = useState(1);
-  async function handleLoadMore() {
-    if (meetups.lenght < 10) return;
-    setPage(page + 1);
-  }
-
-  /** Inifnity scroll  */
-
   /** Refreshing page  */
-  const [refreshing, setRefreshing] = useState(false);
   async function handleRefresh() {
     setRefreshing(true);
     setPage(1);
@@ -127,8 +129,9 @@ export default function Dashboard() {
             keyExtractor={item => String(item.id)}
             renderItem={({ item }) => (
               <Meetups
-                onSubscription={() => handleSubscription(item.id)}
+                handleClick={() => handleSubscription(item.id)}
                 data={item}
+                type="meetup"
               />
             )}
           />

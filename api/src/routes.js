@@ -24,11 +24,15 @@ routes.post('/files', upload.single('file'), FileController.store);
 routes.post('/meetups', MeetUpController.store);
 routes.put('/meetups/:id', MeetUpController.update);
 routes.get('/meetups', MeetUpController.index);
-routes.delete('/meetups/:id', MeetUpController.destroy);
+routes.delete('/meetups/:id', MeetUpController.delete);
 
 routes.get('/list', ListController.index);
 
 routes.get('/subscriptions', SubscriptionController.index);
+routes.delete(
+  '/meetups/:meetup_id/subscriptions',
+  SubscriptionController.delete
+);
 routes.post('/meetups/:meetup_id/subscriptions', SubscriptionController.store);
 
 export default routes;

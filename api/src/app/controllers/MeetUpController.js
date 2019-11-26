@@ -123,10 +123,7 @@ class MeetUpController {
       description,
       location,
       date,
-      banner,
       picture,
-      path,
-      url,
     } = await Meetup.findByPk(req.params.id, {
       include: [
         {
@@ -146,7 +143,7 @@ class MeetUpController {
     });
   }
 
-  async destroy(req, res) {
+  async delete(req, res) {
     const meetup = await Meetup.findByPk(req.params.id);
     const user_id = req.userId;
     if (meetup.user_id !== user_id) {

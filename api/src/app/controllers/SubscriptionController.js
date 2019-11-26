@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import Subscription from '../models/Subscription';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
+import File from '../models/File';
 
 import SubscriptionMail from '../jobs/SubscriptionMail';
 import Queue from '../../lib/Queue';
@@ -21,6 +22,17 @@ class SubscriptionController {
               [Op.gt]: currentDate,
             },
           },
+          include: [
+            {
+              model: File,
+              as: 'picture',
+              attributes: ['id', 'path', 'url'],
+            },
+            {
+              model: User,
+              attributes: ['name', 'email'],
+            },
+          ],
         },
       ],
       order: [[Meetup, 'date']],
@@ -68,7 +80,7 @@ class SubscriptionController {
     if (checkTime) {
       return res
         .status(401)
-        .json({ error: ' You already have a meetup at the same time`' });
+        .json({ error: ' You already have a meetup at the same time' });
     }
     const subscriptions = await Subscription.create({
       user_id: req.userId,
@@ -81,6 +93,27 @@ class SubscriptionController {
     });
 
     return res.json(subscriptions);
+  }
+
+  async delete(req, res) {
+    const subscription = await Subscription.findByPk(req.params.meetup_id);
+
+    if (!subscription) {
+      return res
+        .status(400)
+        .json({ error: 'This subscription does not exists' });
+    }
+
+    const meetup = await Meetup.findByPk(subscription.meetup_id);
+
+    if (subscription.user_id !== req.userId) {
+      return res.status(401).json({ error: 'Thats not your subscription' });
+    }
+    if (!meetup) {
+      return res.status(401).json({ error: 'This meetups does not exists' });
+    }
+    await subscription.destroy();
+    return res.send();
   }
 }
 
