@@ -142,7 +142,7 @@ export default function Dashboard() {
             refreshing={refreshing}
             onRefresh={handleRefresh}
             onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.3}
+            onEndReachedThreshold={0.1}
             data={meetups}
             keyExtractor={item => String(item.id)}
             renderItem={({ item }) => (
