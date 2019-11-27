@@ -25,6 +25,7 @@ export default function Dashboard() {
   const [date, setDate] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [meetups, setMeetups] = useState([]);
 
@@ -33,19 +34,48 @@ export default function Dashboard() {
     [date]
   );
 
-  async function handleLoadMore() {
-    setLoading(true);
-    const newPage = page + 1;
-    setPage(newPage);
-
-    setLoading(false);
+  /** Changind date  */
+  function handlePrevDay() {
+    if (date < new Date()) return;
+    setDate(subDays(date, 1));
+    setPage(1);
   }
 
+  function handleNextDat() {
+    setDate(addDays(date, 1));
+    setPage(1);
+  }
+  /** Changind date  */
+
   /** Loading meetups */
+
+  async function handleLoadMore() {
+    const newPage = page + 1;
+    if (meetups.length >= 10) {
+      setLoading(true);
+      setDate(date);
+      setPage(newPage);
+      if (total < 1) {
+        setLoading(false);
+        return;
+      }
+      const response = await api.get('meetups', {
+        params: {
+          date,
+          page,
+        },
+      });
+      const totalItems = response.data.length;
+      setTotal(totalItems);
+      setMeetups(page > 1 ? [...meetups, ...response.data] : response.data);
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     async function loadMeetups(nextPage = page) {
       setLoading(true);
+      setDate(date);
 
       const response = await api.get('meetups', {
         params: {
@@ -53,24 +83,15 @@ export default function Dashboard() {
           page: nextPage,
         },
       });
+      setTotal(response.data.length);
       setRefreshing(false);
-      setMeetups(page >= 1 ? [...meetups, ...response.data] : response.data);
-      setPage(page);
+      setMeetups(page > 1 ? [...meetups, ...response.data] : response.data);
       setLoading(false);
     }
     loadMeetups();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date, page]);
-  console.tron.log(page);
-  // const response = await api.get('meetups', {
-  //   params: {
-  //     date,
-  //     page: newPage,
-  //   },
-  // });
-  // setMeetups([...meetups, ...response.data]);
-  //
-  /** Loading meetups */
+  }, [date]);
 
   /** Refreshing page  */
 
@@ -88,17 +109,6 @@ export default function Dashboard() {
   }
 
   /** Refreshing page  */
-
-  /** Changind date  */
-  function handlePrevDay() {
-    if (date < new Date()) return;
-    setDate(subDays(date, 1));
-  }
-
-  function handleNextDat() {
-    setDate(addDays(date, 1));
-  }
-  /** Changind date  */
 
   async function handleSubscription(id) {
     try {
@@ -126,26 +136,23 @@ export default function Dashboard() {
             <Icon name="chevron-right" size={20} color="#fff" />
           </DateButton>
         </DatePicker>
-        {loading ? (
-          <Text>Carregando....</Text>
-        ) : (
-          <List
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            onEndReachedThreshold={0.2}
-            onEndReached={meetups.length <= 10 ? handleLoadMore : null}
-            ListFooterComponent={loading && <Loading />}
-            data={meetups}
-            keyExtractor={item => String(item.id)}
-            renderItem={({ item }) => (
-              <Meetups
-                handleClick={() => handleSubscription(item.id)}
-                data={item}
-                type="meetup"
-              />
-            )}
-          />
-        )}
+
+        <List
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          onEndReachedThreshold={0.2}
+          onEndReached={meetups.length >= 10 ? handleLoadMore : null}
+          ListFooterComponent={loading && <Loading />}
+          data={meetups}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => (
+            <Meetups
+              handleClick={() => handleSubscription(item.id)}
+              data={item}
+              type="meetup"
+            />
+          )}
+        />
       </Container>
     </Background>
   );
