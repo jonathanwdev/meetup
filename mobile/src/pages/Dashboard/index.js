@@ -85,7 +85,7 @@ export default function Dashboard() {
       });
       setTotal(response.data.length);
       setRefreshing(false);
-      setMeetups(page > 1 ? [...meetups, ...response.data] : response.data);
+      setMeetups(response.data);
       setLoading(false);
     }
     loadMeetups();
@@ -141,7 +141,7 @@ export default function Dashboard() {
           refreshing={refreshing}
           onRefresh={handleRefresh}
           onEndReachedThreshold={0.2}
-          onEndReached={meetups.length >= 10 ? handleLoadMore : null}
+          onEndReached={handleLoadMore}
           ListFooterComponent={loading && <Loading />}
           data={meetups}
           keyExtractor={item => String(item.id)}
