@@ -11,7 +11,7 @@ import {
   SubscriptionButton,
 } from './styles';
 
-export default function Meetups({ data, handleClick, type }) {
+export default function Meetups({ data, handleClick, type, subscribed }) {
   return (
     <>
       <Meetup past={new Date(data.date) < new Date()}>
@@ -28,6 +28,7 @@ export default function Meetups({ data, handleClick, type }) {
         </Description>
         <SubscriptionButton
           onPress={handleClick}
+          subscribed={subscribed}
           invisible={new Date(data.date) < new Date()}
         >
           {type === 'subs' ? 'Cancelar inscrição' : 'Realizar inscrição'}

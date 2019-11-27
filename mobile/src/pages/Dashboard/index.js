@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-
+import { withNavigationFocus } from 'react-navigation';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -16,14 +16,14 @@ import {
   DatePicker,
   DateText,
   DateButton,
-  Text,
   List,
   Loading,
 } from './styles';
 
-export default function Dashboard() {
+function Dashboard({ isFocused }) {
   const [date, setDate] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
+  const [subscriptions, setSubscriptions] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -71,24 +71,26 @@ export default function Dashboard() {
       setLoading(false);
     }
   }
+  async function loadMeetups(nextPage = page) {
+    setLoading(true);
+    setDate(date);
+
+    const response = await api.get('meetups', {
+      params: {
+        date,
+        page: nextPage,
+      },
+    });
+    setTotal(response.data.length);
+    setRefreshing(false);
+    setMeetups(response.data);
+    setLoading(false);
+  }
 
   useEffect(() => {
-    async function loadMeetups(nextPage = page) {
-      setLoading(true);
-      setDate(date);
-
-      const response = await api.get('meetups', {
-        params: {
-          date,
-          page: nextPage,
-        },
-      });
-      setTotal(response.data.length);
-      setRefreshing(false);
-      setMeetups(response.data);
-      setLoading(false);
+    if (isFocused) {
+      loadMeetups();
     }
-    loadMeetups();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
@@ -110,14 +112,33 @@ export default function Dashboard() {
 
   /** Refreshing page  */
 
+  /** Subscribing */
+
   async function handleSubscription(id) {
     try {
       await api.post(`meetups/${id}/subscriptions`);
+
       Alert.alert('Sucesso', 'Inscreição realizada com sucesso!');
     } catch (err) {
       Alert.alert('Erro', 'Parece que algo deu errado :( ');
     }
   }
+
+  async function loadSubscriptions() {
+    try {
+      const response = await api.get('subscriptions');
+      setSubscriptions(response.data);
+    } catch (err) {
+      Alert.alert('erro', 'Erro ao carregar inscrições');
+    }
+  }
+  useEffect(() => {
+    if (isFocused) {
+      loadSubscriptions();
+    }
+  }, [isFocused]);
+
+  /** Subscribing */
 
   return (
     <Background>
@@ -147,6 +168,12 @@ export default function Dashboard() {
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <Meetups
+              subscribed={
+                subscriptions
+                  ? subscriptions.filter(subs => subs.meetup_id === item.id)
+                      .length > 0
+                  : ''
+              }
               handleClick={() => handleSubscription(item.id)}
               data={item}
               type="meetup"
@@ -163,3 +190,5 @@ Dashboard.navigationOptions = {
     <Icon name="format-list-bulleted" size={20} color={tintColor} />
   ),
 };
+
+export default withNavigationFocus(Dashboard);

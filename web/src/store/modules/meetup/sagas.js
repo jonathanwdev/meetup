@@ -54,7 +54,9 @@ export function* deleteMeetup({ payload }) {
     toast.success('Meetup excluido com sucesso!');
     history.push('/dashboard');
   } catch (err) {
-    toast.error('Ocorreu um erro inesperado, tente novamente.');
+    toast.error(
+      err.response.data.error || 'Ocorreu um erro inesperado, tente novamente.'
+    );
 
     yield put(meetFailure());
   }

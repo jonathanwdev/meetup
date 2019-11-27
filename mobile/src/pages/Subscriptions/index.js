@@ -46,9 +46,7 @@ function Subscriptions({ isFocused }) {
 
   async function handleRefresh() {
     setRefreshing(true);
-    // const response = await api.get('subscriptions');
     loadSubscriptions();
-    // setSubscriptions(response.data);
     setRefreshing(false);
   }
 
@@ -67,6 +65,7 @@ function Subscriptions({ isFocused }) {
               handleClick={() => handleUnSubscription(item.id)}
               type="subs"
               data={item.Meetup}
+              subscriptions={subscriptions}
             />
           )}
         />

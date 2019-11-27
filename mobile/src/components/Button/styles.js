@@ -8,6 +8,8 @@ export const Container = styled(RectButton)`
   align-items: center;
   justify-content: center;
   display: ${props => (props.invisible ? 'none' : 'flex')};
+  background: ${props =>
+    props.subscribed ? 'rgba(255,255,255,0.2)' : '#f94d6a'};
 `;
 export const Text = styled.Text`
   color: rgba(255, 255, 255, 0.8);
