@@ -8,7 +8,7 @@ import Background from '~/components/Background';
 import Header from '~/components/Header';
 import Meetups from '~/components/Meetups';
 
-import { Container, List } from './styles';
+import { Container, List, Title } from './styles';
 
 function Subscriptions({ isFocused }) {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -56,6 +56,7 @@ function Subscriptions({ isFocused }) {
     <Background>
       <Header />
       <Container>
+        <Title>Inscrições</Title>
         <List
           refreshing={refreshing}
           onRefresh={handleRefresh}

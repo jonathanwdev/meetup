@@ -15,3 +15,10 @@ export const List = styled.FlatList.attrs({
 })`
   margin-top: 20px;
 `;
+
+export const Title = styled.Text`
+  font-size: 18px;
+  color: #fff;
+  align-self: center;
+  margin: 10px 0 20px;
+`;

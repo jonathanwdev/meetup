@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Logo from '~/assets/M.png';
 
 import { signUpRequest } from '~/store/modules/auth/actions';

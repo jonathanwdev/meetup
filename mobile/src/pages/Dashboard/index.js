@@ -33,28 +33,41 @@ export default function Dashboard() {
     [date]
   );
 
+  async function handleLoadMore() {
+    setLoading(true);
+    const newPage = page + 1;
+    setPage(newPage);
+
+    setLoading(false);
+  }
+
   /** Loading meetups */
 
   useEffect(() => {
-    async function loadMeetups() {
+    async function loadMeetups(nextPage = page) {
       setLoading(true);
 
       const response = await api.get('meetups', {
         params: {
           date,
-          page,
+          page: nextPage,
         },
       });
-      setMeetups(response.data);
-      setPage(1);
+      setRefreshing(false);
+      setMeetups(page >= 1 ? [...meetups, ...response.data] : response.data);
+      setPage(page);
       setLoading(false);
     }
     loadMeetups();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, page]);
+  console.tron.log(page);
 
+  //
   /** Loading meetups */
 
   /** Refreshing page  */
+
   async function handleRefresh() {
     setRefreshing(true);
     const response = await api.get('meetups', {
@@ -67,6 +80,7 @@ export default function Dashboard() {
 
     setRefreshing(false);
   }
+
   /** Refreshing page  */
 
   /** Changind date  */
@@ -87,20 +101,6 @@ export default function Dashboard() {
     } catch (err) {
       Alert.alert('Erro', 'Parece que algo deu errado :( ');
     }
-  }
-
-  async function handleLoadMore() {
-    setLoading(true);
-    const newPage = page + 1;
-    const response = await api.get('meetups', {
-      params: {
-        date,
-        page: newPage,
-      },
-    });
-    setMeetups([...meetups, ...response.data]);
-    setPage(newPage);
-    setLoading(false);
   }
 
   return (
@@ -126,7 +126,7 @@ export default function Dashboard() {
           <List
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            onEndReachedThreshold={0.1}
+            onEndReachedThreshold={0.2}
             onEndReached={handleLoadMore}
             ListFooterComponent={loading && <Loading />}
             data={meetups}
