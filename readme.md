@@ -1,4 +1,4 @@
-<h1>Project MeetUp</h1>
+<h1>>> MeetUp <<</h1>
 <p>
   <img src="_images/first1.png" width="315" />
   <img src="_images/first2.png" width="315" />
