@@ -62,7 +62,13 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, page]);
   console.tron.log(page);
-
+  // const response = await api.get('meetups', {
+  //   params: {
+  //     date,
+  //     page: newPage,
+  //   },
+  // });
+  // setMeetups([...meetups, ...response.data]);
   //
   /** Loading meetups */
 
@@ -127,7 +133,7 @@ export default function Dashboard() {
             refreshing={refreshing}
             onRefresh={handleRefresh}
             onEndReachedThreshold={0.2}
-            onEndReached={handleLoadMore}
+            onEndReached={meetups.length <= 10 ? handleLoadMore : null}
             ListFooterComponent={loading && <Loading />}
             data={meetups}
             keyExtractor={item => String(item.id)}
